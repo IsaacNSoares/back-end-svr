@@ -22,7 +22,4 @@ public class Carrinho {
     @OneToOne
     private Colaborador vendedor;
 
-    @OneToMany
-    private ItemCarrinho item;
-
 }
