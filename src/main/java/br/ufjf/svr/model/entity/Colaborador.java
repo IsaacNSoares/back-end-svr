@@ -1,0 +1,26 @@
+package br.ufjf.svr.model.entity;
+
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+
+public class Colaborador extends Pessoa {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    private String codigo;
+    private Boolean isAdmin;
+
+    @OneToOne
+    private Loja loja;
+}
