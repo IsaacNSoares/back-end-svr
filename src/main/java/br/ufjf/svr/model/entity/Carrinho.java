@@ -17,9 +17,9 @@ public class Carrinho {
     private long id;
 
     @OneToOne
-    private Cliente comprador;
+    private Cliente cliente;
 
     @OneToOne
-    private Colaborador vendedor;
+    private Colaborador colaborador;
 
 }
