@@ -18,6 +18,6 @@ public class CorProduto {
 
     private String nome;
 
-    @OneToOne
+    @ManyToOne
     private Produto produto;
 }

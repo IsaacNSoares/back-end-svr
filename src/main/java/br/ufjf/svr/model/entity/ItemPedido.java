@@ -19,12 +19,12 @@ public class ItemPedido {
     private Float precoUnitario;
     private Integer quantidade;
 
-    @OneToOne
+    @ManyToOne
     private Loja lojaOrigem;
 
-    @OneToOne
+    @ManyToOne
     private Produto produto;
 
-    @OneToOne
+    @ManyToOne
     private Pedido pedido;
 }

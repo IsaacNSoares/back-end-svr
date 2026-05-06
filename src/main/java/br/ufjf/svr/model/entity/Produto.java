@@ -23,7 +23,7 @@ public class Produto {
     private Float precoVarejo;
     private Float precoAtacado;
 
-    @OneToOne
+    @ManyToOne
     private Fornecedor fornecedor;
 
 }

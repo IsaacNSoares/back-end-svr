@@ -18,9 +18,9 @@ public class Produto_Loja {
 
     private Integer quantidade;
 
-    @OneToOne
+    @ManyToOne
     private Loja loja;
 
-    @OneToOne
+    @ManyToOne
     private Produto produto;
 }

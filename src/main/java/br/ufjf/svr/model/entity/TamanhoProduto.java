@@ -17,6 +17,6 @@ public class TamanhoProduto {
 
     private String nome;
 
-    @OneToOne
+    @ManyToOne
     private Produto produto;
 }

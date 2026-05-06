@@ -20,16 +20,16 @@ public class Pedido {
     private String status;
     private Float valorTotal;
 
-    @OneToOne
+    @ManyToOne
     private Cliente comprador;
 
-    @OneToOne
+    @ManyToOne
     private Colaborador vendedor;
 
-    @OneToOne
+    @ManyToOne
     private Endereco endEntrega;
 
-    @OneToOne
+    @ManyToOne
     private MetodoPagamento pagamento;
 
 }
