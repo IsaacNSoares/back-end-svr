@@ -15,7 +15,7 @@ public class ItemPedidoDTO {
     private long id;
     private Float precoUnitario;
     private Integer quantidade;
-    private Loja lojaOrigem;
+    private long idlojaOrigem;
     private long idProduto;
     private long idPedido;
 

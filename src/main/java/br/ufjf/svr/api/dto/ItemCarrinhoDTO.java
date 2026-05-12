@@ -1,7 +1,6 @@
 package br.ufjf.svr.api.dto;
 
 import br.ufjf.svr.model.entity.ItemCarrinho;
-import br.ufjf.svr.model.entity.Loja;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,7 +13,7 @@ import org.modelmapper.ModelMapper;
 public class ItemCarrinhoDTO {
     private long id;
     private Integer quantidade;
-    private Loja lojaOrigem;
+    private long idlojaOrigem;
     private long idProduto;
     private long idCarrinho;
 
