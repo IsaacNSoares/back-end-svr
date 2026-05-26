@@ -12,7 +12,7 @@ import org.modelmapper.ModelMapper;
 
 public class ClienteDTO {
 
-    private long id;
+    private Long id;
     private String nome;
     private String documento;
     private String telefone;
@@ -20,7 +20,7 @@ public class ClienteDTO {
     private String dataNascimento;
     private String senha;
     private Boolean pessoaJuridica;
-    private long idMetodo;
+    private Long idMetodo;
 
     public static ClienteDTO create(Cliente cliente) {
         ModelMapper modelMapper = new ModelMapper();

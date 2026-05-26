@@ -12,7 +12,7 @@ import org.modelmapper.ModelMapper;
 
 public class ColaboradorDTO {
 
-    private long id;
+    private Long id;
     private String nome;
     private String documento;
     private String telefone;
@@ -21,7 +21,7 @@ public class ColaboradorDTO {
     private String senha;
     private String codigo;
     private Boolean isAdmin;
-    private long idLoja;
+    private Long idLoja;
 
     public static ColaboradorDTO create(Colaborador colaborador) {
         ModelMapper modelMapper = new ModelMapper();

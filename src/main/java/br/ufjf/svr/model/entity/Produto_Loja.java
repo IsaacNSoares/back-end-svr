@@ -14,7 +14,7 @@ public class Produto_Loja {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     private Integer quantidade;
 

@@ -11,10 +11,10 @@ import org.modelmapper.ModelMapper;
 @AllArgsConstructor
 
 public class LojaDTO {
-    private long id;
+    private Long id;
     private String nome;
     private String cnpj;
-    private long idEndereco;
+    private Long idEndereco;
 
     public static LojaDTO create(Loja loja) {
         ModelMapper modelMapper = new ModelMapper();

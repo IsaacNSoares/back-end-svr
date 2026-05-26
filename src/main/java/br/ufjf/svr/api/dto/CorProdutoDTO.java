@@ -12,9 +12,9 @@ import org.modelmapper.ModelMapper;
 
 public class CorProdutoDTO {
 
-    private long id;
+    private Long id;
     private String nome;
-    private long idProduto;
+    private Long idProduto;
 
     public static CorProdutoDTO create(CorProduto corProduto) {
         ModelMapper modelMapper = new ModelMapper();

@@ -11,14 +11,14 @@ import org.modelmapper.ModelMapper;
 @AllArgsConstructor
 
 public class PedidoDTO {
-    private long id;
+    private Long id;
     private String dataPedido;
     private String status;
     private Float valorTotal;
-    private long idComprador;
-    private long idVendedor;
-    private long idEndEntrega;
-    private long idPagamento;
+    private Long idComprador;
+    private Long idVendedor;
+    private Long idEndEntrega;
+    private Long idPagamento;
 
     public static PedidoDTO create(Pedido pedido) {
         ModelMapper modelMapper = new ModelMapper();

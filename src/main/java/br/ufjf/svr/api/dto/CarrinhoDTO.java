@@ -12,9 +12,9 @@ import org.modelmapper.ModelMapper;
 
 public class CarrinhoDTO {
 
-    private long id;
-    private long idCliente;
-    private long idColaborador;
+    private Long id;
+    private Long idCliente;
+    private Long idColaborador;
 
     public static CarrinhoDTO create(Carrinho carrinho) {
         ModelMapper modelMapper = new ModelMapper();

@@ -11,9 +11,9 @@ import org.modelmapper.ModelMapper;
 @AllArgsConstructor
 
 public class TamanhoProdutoDTO {
-    private long id;
+    private Long id;
     private String nome;
-    private long idProduto;
+    private Long idProduto;
 
     public static TamanhoProdutoDTO create(TamanhoProduto tamanhoProduto) {
         ModelMapper modelMapper = new ModelMapper();
