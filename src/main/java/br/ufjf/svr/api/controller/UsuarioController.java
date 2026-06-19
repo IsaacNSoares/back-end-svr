@@ -4,6 +4,7 @@ import br.ufjf.svr.api.dto.*;
 import br.ufjf.svr.exception.RegraNegocioException;
 import br.ufjf.svr.exception.SenhaInvalidaException;
 import br.ufjf.svr.model.entity.Usuario;
+import br.ufjf.svr.security.JwtService;
 import br.ufjf.svr.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
