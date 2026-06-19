@@ -11,11 +11,11 @@ import org.modelmapper.ModelMapper;
 @AllArgsConstructor
 
 public class ItemCarrinhoDTO {
-    private long id;
+    private Long id;
     private Integer quantidade;
-    private long idlojaOrigem;
-    private long idProduto;
-    private long idCarrinho;
+    private Long idlojaOrigem;
+    private Long idProduto;
+    private Long idCarrinho;
 
     public static ItemCarrinhoDTO create(ItemCarrinho itemCarrinho) {
         ModelMapper modelMapper = new ModelMapper();

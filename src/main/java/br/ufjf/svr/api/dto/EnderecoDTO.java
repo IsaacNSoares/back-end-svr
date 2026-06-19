@@ -12,7 +12,7 @@ import org.modelmapper.ModelMapper;
 
 public class EnderecoDTO {
 
-    private long id;
+    private Long id;
     private String cep;
     private String logradouro;
     private String numero;
@@ -20,7 +20,7 @@ public class EnderecoDTO {
     private String bairro;
     private String cidade;
     private String estado;
-    private long idPessoa;
+    private Long idPessoa;
 
     public static EnderecoDTO create(Endereco endereco) {
         ModelMapper modelMapper = new ModelMapper();

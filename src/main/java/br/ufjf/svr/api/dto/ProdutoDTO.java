@@ -11,14 +11,14 @@ import org.modelmapper.ModelMapper;
 @AllArgsConstructor
 
 public class ProdutoDTO {
-    private long id;
+    private Long id;
     private String sku;
     private String nome;
     private String descricao;
     private String urlFoto;
     private Float precoVarejo;
     private Float precoAtacado;
-    private long idFornecedor;
+    private Long idFornecedor;
 
     public static ProdutoDTO create(Produto produto) {
         ModelMapper modelMapper = new ModelMapper();

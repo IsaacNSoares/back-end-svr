@@ -11,7 +11,7 @@ import org.modelmapper.ModelMapper;
 @AllArgsConstructor
 
 public class FornecedorDTO {
-    private long id;
+    private Long id;
     private String razaoSocial;
     private String cnpj;
     private String telefone;

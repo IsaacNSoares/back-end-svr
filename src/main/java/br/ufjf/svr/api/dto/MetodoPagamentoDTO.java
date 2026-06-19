@@ -11,7 +11,7 @@ import org.modelmapper.ModelMapper;
 @AllArgsConstructor
 
 public class MetodoPagamentoDTO {
-    private long id;
+    private Long id;
     private String nome;
     private Boolean ativo;
 
