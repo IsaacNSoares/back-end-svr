@@ -55,6 +55,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/usuarios/**").permitAll()
                         .requestMatchers("/api/v1/clientes/**").permitAll()
                         .requestMatchers("/api/v1/produtos/**").permitAll()
+                        .requestMatchers("/api/v1/metodos-pagamento/**").hasAnyRole("ADMIN")
                         .requestMatchers("/api/v1/lojas/**").hasAnyRole("ADMIN")
                         .requestMatchers("/api/v1/colaboradores/**").hasAnyRole("ADMIN")
                         .anyRequest().authenticated()
