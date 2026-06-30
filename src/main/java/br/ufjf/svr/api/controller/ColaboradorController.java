@@ -4,6 +4,9 @@ import br.ufjf.svr.api.dto.ColaboradorDTO;
 import br.ufjf.svr.exception.RegraNegocioException;
 import br.ufjf.svr.model.entity.Colaborador;
 import br.ufjf.svr.service.ColaboradorService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -18,18 +21,21 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/v1/colaboradores")
 @RequiredArgsConstructor
 @CrossOrigin
+@Tag(name = "Colaboradores", description = "Operações relacionadas a colaboradores. Requer permissão de ADMIN para todos os endpoints.")
 public class ColaboradorController {
 
     private final ColaboradorService service;
 
     @GetMapping()
+    @Operation(summary = "Lista todos os colaboradores")
     public ResponseEntity get() {
         List<Colaborador> colaboradores = service.getColaboradores();
         return ResponseEntity.ok(colaboradores.stream().map(ColaboradorDTO::create).collect(Collectors.toList()));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity get(@PathVariable("id") Long id) {
+    @Operation(summary = "Busca um colaborador pelo ID")
+    public ResponseEntity get(@Parameter(description = "ID do colaborador a ser buscado") @PathVariable("id") Long id) {
         Optional<Colaborador> colaborador = service.getColaboradorById(id);
         if (!colaborador.isPresent()) {
             return new ResponseEntity("Colaborador não encontrado", HttpStatus.NOT_FOUND);
@@ -38,6 +44,7 @@ public class ColaboradorController {
     }
 
     @PostMapping()
+    @Operation(summary = "Cria um novo colaborador")
     public ResponseEntity post(@RequestBody ColaboradorDTO dto) {
         try {
             Colaborador colaborador = converter(dto);
@@ -49,7 +56,8 @@ public class ColaboradorController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody ColaboradorDTO dto) {
+    @Operation(summary = "Atualiza um colaborador existente")
+    public ResponseEntity atualizar(@Parameter(description = "ID do colaborador a ser atualizado") @PathVariable("id") Long id, @RequestBody ColaboradorDTO dto) {
         if (!service.getColaboradorById(id).isPresent()) {
             return new ResponseEntity("Colaborador não encontrado", HttpStatus.NOT_FOUND);
         }
@@ -64,7 +72,8 @@ public class ColaboradorController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity excluir(@PathVariable("id") Long id) {
+    @Operation(summary = "Exclui um colaborador")
+    public ResponseEntity excluir(@Parameter(description = "ID do colaborador a ser excluído") @PathVariable("id") Long id) {
         Optional<Colaborador> colaborador = service.getColaboradorById(id);
         if (!colaborador.isPresent()) {
             return new ResponseEntity("Colaborador não encontrado", HttpStatus.NOT_FOUND);

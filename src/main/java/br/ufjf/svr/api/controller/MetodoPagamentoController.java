@@ -4,6 +4,9 @@ import br.ufjf.svr.api.dto.MetodoPagamentoDTO;
 import br.ufjf.svr.exception.RegraNegocioException;
 import br.ufjf.svr.model.entity.MetodoPagamento;
 import br.ufjf.svr.service.MetodoPagamentoService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -18,18 +21,21 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/v1/metodos-pagamento")
 @RequiredArgsConstructor
 @CrossOrigin
+@Tag(name = "Métodos de Pagamento", description = "Operações relacionadas a métodos de pagamento. Requer permissão de ADMIN para todos os endpoints.")
 public class MetodoPagamentoController {
 
     private final MetodoPagamentoService service;
 
     @GetMapping()
+    @Operation(summary = "Lista todos os métodos de pagamento")
     public ResponseEntity get() {
         List<MetodoPagamento> metodosPagamento = service.getMetodosPagamento();
         return ResponseEntity.ok(metodosPagamento.stream().map(MetodoPagamentoDTO::create).collect(Collectors.toList()));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity get(@PathVariable("id") Long id) {
+    @Operation(summary = "Busca um método de pagamento pelo ID")
+    public ResponseEntity get(@Parameter(description = "ID do método de pagamento a ser buscado") @PathVariable("id") Long id) {
         Optional<MetodoPagamento> metodoPagamento = service.getMetodoPagamentoById(id);
         if (!metodoPagamento.isPresent()) {
             return new ResponseEntity("Método de pagamento não encontrado", HttpStatus.NOT_FOUND);
@@ -38,6 +44,7 @@ public class MetodoPagamentoController {
     }
 
     @PostMapping()
+    @Operation(summary = "Cria um novo método de pagamento")
     public ResponseEntity post(@RequestBody MetodoPagamentoDTO dto) {
         try {
             MetodoPagamento metodoPagamento = converter(dto);
@@ -49,7 +56,8 @@ public class MetodoPagamentoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody MetodoPagamentoDTO dto) {
+    @Operation(summary = "Atualiza um método de pagamento existente")
+    public ResponseEntity atualizar(@Parameter(description = "ID do método de pagamento a ser atualizado") @PathVariable("id") Long id, @RequestBody MetodoPagamentoDTO dto) {
         if (!service.getMetodoPagamentoById(id).isPresent()) {
             return new ResponseEntity("Método de pagamento não encontrado", HttpStatus.NOT_FOUND);
         }
@@ -64,7 +72,8 @@ public class MetodoPagamentoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity excluir(@PathVariable("id") Long id) {
+    @Operation(summary = "Exclui um método de pagamento")
+    public ResponseEntity excluir(@Parameter(description = "ID do método de pagamento a ser excluído") @PathVariable("id") Long id) {
         Optional<MetodoPagamento> metodoPagamento = service.getMetodoPagamentoById(id);
         if (!metodoPagamento.isPresent()) {
             return new ResponseEntity("Método de pagamento não encontrado", HttpStatus.NOT_FOUND);

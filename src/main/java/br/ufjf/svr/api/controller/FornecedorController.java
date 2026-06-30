@@ -4,6 +4,9 @@ import br.ufjf.svr.api.dto.FornecedorDTO;
 import br.ufjf.svr.exception.RegraNegocioException;
 import br.ufjf.svr.model.entity.Fornecedor;
 import br.ufjf.svr.service.FornecedorService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -18,18 +21,21 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/v1/fornecedores")
 @RequiredArgsConstructor
 @CrossOrigin
+@Tag(name = "Fornecedores", description = "Operações relacionadas a fornecedores. Requer permissão de ADMIN para todos os endpoints.")
 public class FornecedorController {
 
     private final FornecedorService service;
 
     @GetMapping()
+    @Operation(summary = "Lista todos os fornecedores")
     public ResponseEntity get() {
         List<Fornecedor> fornecedores = service.getFornecedores();
         return ResponseEntity.ok(fornecedores.stream().map(FornecedorDTO::create).collect(Collectors.toList()));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity get(@PathVariable("id") Long id) {
+    @Operation(summary = "Busca um fornecedor pelo ID")
+    public ResponseEntity get(@Parameter(description = "ID do fornecedor a ser buscado") @PathVariable("id") Long id) {
         Optional<Fornecedor> fornecedor = service.getFornecedorById(id);
         if (!fornecedor.isPresent()) {
             return new ResponseEntity("Fornecedor não encontrado", HttpStatus.NOT_FOUND);
@@ -38,6 +44,7 @@ public class FornecedorController {
     }
 
     @PostMapping()
+    @Operation(summary = "Cria um novo fornecedor")
     public ResponseEntity post(@RequestBody FornecedorDTO dto) {
         try {
             Fornecedor fornecedor = converter(dto);
@@ -49,7 +56,8 @@ public class FornecedorController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody FornecedorDTO dto) {
+    @Operation(summary = "Atualiza um fornecedor existente")
+    public ResponseEntity atualizar(@Parameter(description = "ID do fornecedor a ser atualizado") @PathVariable("id") Long id, @RequestBody FornecedorDTO dto) {
         if (!service.getFornecedorById(id).isPresent()) {
             return new ResponseEntity("Fornecedor não encontrado", HttpStatus.NOT_FOUND);
         }
@@ -64,7 +72,8 @@ public class FornecedorController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity excluir(@PathVariable("id") Long id) {
+    @Operation(summary = "Exclui um fornecedor")
+    public ResponseEntity excluir(@Parameter(description = "ID do fornecedor a ser excluído") @PathVariable("id") Long id) {
         Optional<Fornecedor> fornecedor = service.getFornecedorById(id);
         if (!fornecedor.isPresent()) {
             return new ResponseEntity("Fornecedor não encontrado", HttpStatus.NOT_FOUND);

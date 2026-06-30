@@ -4,6 +4,9 @@ import br.ufjf.svr.api.dto.ClienteDTO;
 import br.ufjf.svr.exception.RegraNegocioException;
 import br.ufjf.svr.model.entity.Cliente;
 import br.ufjf.svr.service.ClienteService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -18,18 +21,21 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/v1/clientes")
 @RequiredArgsConstructor
 @CrossOrigin
+@Tag(name = "Clientes", description = "Operações relacionadas a clientes. Acesso público (não requer autenticação) para todos os endpoints.")
 public class ClienteController {
 
     private final ClienteService service;
 
     @GetMapping()
+    @Operation(summary = "Lista todos os clientes")
     public ResponseEntity get() {
         List<Cliente> clientes = service.getClientes();
         return ResponseEntity.ok(clientes.stream().map(ClienteDTO::create).collect(Collectors.toList()));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity get(@PathVariable("id") Long id) {
+    @Operation(summary = "Busca um cliente pelo ID")
+    public ResponseEntity get(@Parameter(description = "ID do cliente a ser buscado") @PathVariable("id") Long id) {
         Optional<Cliente> cliente = service.getClienteById(id);
         if (!cliente.isPresent()) {
             return new ResponseEntity("Cliente não encontrado", HttpStatus.NOT_FOUND);
@@ -38,6 +44,7 @@ public class ClienteController {
     }
 
     @PostMapping()
+    @Operation(summary = "Cria um novo cliente")
     public ResponseEntity post(@RequestBody ClienteDTO dto) {
         try {
             Cliente cliente = converter(dto);
@@ -49,7 +56,8 @@ public class ClienteController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody ClienteDTO dto) {
+    @Operation(summary = "Atualiza um cliente existente")
+    public ResponseEntity atualizar(@Parameter(description = "ID do cliente a ser atualizado") @PathVariable("id") Long id, @RequestBody ClienteDTO dto) {
         if (!service.getClienteById(id).isPresent()) {
             return new ResponseEntity("Cliente não encontrado", HttpStatus.NOT_FOUND);
         }
@@ -64,7 +72,8 @@ public class ClienteController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity excluir(@PathVariable("id") Long id) {
+    @Operation(summary = "Exclui um cliente")
+    public ResponseEntity excluir(@Parameter(description = "ID do cliente a ser excluído") @PathVariable("id") Long id) {
         Optional<Cliente> cliente = service.getClienteById(id);
         if (!cliente.isPresent()) {
             return new ResponseEntity("Cliente não encontrado", HttpStatus.NOT_FOUND);

@@ -4,6 +4,9 @@ import br.ufjf.svr.api.dto.LojaDTO;
 import br.ufjf.svr.exception.RegraNegocioException;
 import br.ufjf.svr.model.entity.Loja;
 import br.ufjf.svr.service.LojaService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -18,18 +21,21 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/v1/lojas")
 @RequiredArgsConstructor
 @CrossOrigin
+@Tag(name = "Lojas", description = "Operações relacionadas a lojas. Requer permissão de ADMIN para todos os endpoints.")
 public class LojaController {
 
     private final LojaService service;
 
     @GetMapping()
+    @Operation(summary = "Lista todas as lojas")
     public ResponseEntity get() {
         List<Loja> lojas = service.getLojas();
         return ResponseEntity.ok(lojas.stream().map(LojaDTO::create).collect(Collectors.toList()));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity get(@PathVariable("id") Long id) {
+    @Operation(summary = "Busca uma loja pelo ID")
+    public ResponseEntity get(@Parameter(description = "ID da loja a ser buscada") @PathVariable("id") Long id) {
         Optional<Loja> loja = service.getLojaById(id);
         if (!loja.isPresent()) {
             return new ResponseEntity("Loja não encontrada", HttpStatus.NOT_FOUND);
@@ -38,6 +44,7 @@ public class LojaController {
     }
 
     @PostMapping()
+    @Operation(summary = "Cria uma nova loja")
     public ResponseEntity post(@RequestBody LojaDTO dto) {
         try {
             Loja loja = converter(dto);
@@ -49,7 +56,8 @@ public class LojaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody LojaDTO dto) {
+    @Operation(summary = "Atualiza uma loja existente")
+    public ResponseEntity atualizar(@Parameter(description = "ID da loja a ser atualizada") @PathVariable("id") Long id, @RequestBody LojaDTO dto) {
         if (!service.getLojaById(id).isPresent()) {
             return new ResponseEntity("Loja não encontrada", HttpStatus.NOT_FOUND);
         }
@@ -64,7 +72,8 @@ public class LojaController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity excluir(@PathVariable("id") Long id) {
+    @Operation(summary = "Exclui uma loja")
+    public ResponseEntity excluir(@Parameter(description = "ID da loja a ser excluída") @PathVariable("id") Long id) {
         Optional<Loja> loja = service.getLojaById(id);
         if (!loja.isPresent()) {
             return new ResponseEntity("Loja não encontrada", HttpStatus.NOT_FOUND);

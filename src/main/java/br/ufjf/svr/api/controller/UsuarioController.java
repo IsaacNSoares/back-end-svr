@@ -6,6 +6,9 @@ import br.ufjf.svr.exception.SenhaInvalidaException;
 import br.ufjf.svr.model.entity.Usuario;
 import br.ufjf.svr.security.JwtService;
 import br.ufjf.svr.service.UsuarioService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -24,6 +27,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/v1/usuarios")
 @RequiredArgsConstructor
 @CrossOrigin
+@Tag(name = "Usuários", description = "Operações relacionadas a usuários e autenticação. Acesso público (não requer autenticação) para todos os endpoints.")
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
@@ -33,13 +37,15 @@ public class UsuarioController {
     private final UsuarioService service;
 
     @GetMapping()
+    @Operation(summary = "Lista todos os usuários")
     public ResponseEntity get() {
         List<Usuario> usuarios = service.getUsuarios();
         return ResponseEntity.ok(usuarios.stream().map(UsuarioDTO::create).collect(Collectors.toList()));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity get(@PathVariable("id") Long id) {
+    @Operation(summary = "Busca um usuário pelo ID")
+    public ResponseEntity get(@Parameter(description = "ID do usuário a ser buscado") @PathVariable("id") Long id) {
         Optional<Usuario> usuario = service.getUsuarioById(id);
         if (!usuario.isPresent()) {
             return new ResponseEntity("Usuário não encontrado", HttpStatus.NOT_FOUND);
@@ -48,6 +54,7 @@ public class UsuarioController {
     }
 
     @PostMapping()
+    @Operation(summary = "Cria um novo usuário")
     public ResponseEntity post(@RequestBody UsuarioDTO dto) {
         try {
             if (dto.getSenha() == null || dto.getSenha().trim().equals("") ||
@@ -68,6 +75,7 @@ public class UsuarioController {
     }
 
     @PostMapping("/auth")
+    @Operation(summary = "Autentica um usuário e retorna o token JWT")
     public TokenDTO autenticar(@RequestBody CredenciaisDTO credenciais){
         try{
             Usuario usuario = Usuario.builder()
@@ -82,7 +90,8 @@ public class UsuarioController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody UsuarioDTO dto) {
+    @Operation(summary = "Atualiza um usuário existente")
+    public ResponseEntity atualizar(@Parameter(description = "ID do usuário a ser atualizado") @PathVariable("id") Long id, @RequestBody UsuarioDTO dto) {
         if (!service.getUsuarioById(id).isPresent()) {
             return new ResponseEntity("Usuário não encontrado", HttpStatus.NOT_FOUND);
         }
@@ -104,7 +113,8 @@ public class UsuarioController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity delete(@PathVariable("id") Long id) {
+    @Operation(summary = "Exclui um usuário")
+    public ResponseEntity delete(@Parameter(description = "ID do usuário a ser excluído") @PathVariable("id") Long id) {
         Optional<Usuario> usuario = service.getUsuarioById(id);
         if (!usuario.isPresent()) {
             return new ResponseEntity("Usuário não encontrado", HttpStatus.NOT_FOUND);

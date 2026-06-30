@@ -4,6 +4,9 @@ import br.ufjf.svr.api.dto.Produto_LojaDTO;
 import br.ufjf.svr.exception.RegraNegocioException;
 import br.ufjf.svr.model.entity.Produto_Loja;
 import br.ufjf.svr.service.Produto_LojaService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -18,18 +21,21 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/v1/produtos-loja")
 @RequiredArgsConstructor
 @CrossOrigin
+@Tag(name = "Produtos por Loja", description = "Operações relacionadas ao estoque de produtos por loja. Requer permissão de ADMIN para todos os endpoints.")
 public class Produto_LojaController {
 
     private final Produto_LojaService service;
 
     @GetMapping()
+    @Operation(summary = "Lista todos os registros de estoque")
     public ResponseEntity get() {
         List<Produto_Loja> estoques = service.getEstoques();
         return ResponseEntity.ok(estoques.stream().map(Produto_LojaDTO::create).collect(Collectors.toList()));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity get(@PathVariable("id") Long id) {
+    @Operation(summary = "Busca um registro de estoque pelo ID")
+    public ResponseEntity get(@Parameter(description = "ID do registro de estoque (vínculo produto-loja) a ser buscado") @PathVariable("id") Long id) {
         Optional<Produto_Loja> estoque = service.getEstoqueById(id);
         if (!estoque.isPresent()) {
             return new ResponseEntity("Registro de estoque não encontrado", HttpStatus.NOT_FOUND);
@@ -38,6 +44,7 @@ public class Produto_LojaController {
     }
 
     @PostMapping()
+    @Operation(summary = "Cria um novo registro de estoque")
     public ResponseEntity post(@RequestBody Produto_LojaDTO dto) {
         try {
             Produto_Loja produtoLoja = converter(dto);
@@ -49,7 +56,8 @@ public class Produto_LojaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody Produto_LojaDTO dto) {
+    @Operation(summary = "Atualiza um registro de estoque existente")
+    public ResponseEntity atualizar(@Parameter(description = "ID do registro de estoque (vínculo produto-loja) a ser atualizado") @PathVariable("id") Long id, @RequestBody Produto_LojaDTO dto) {
         if (!service.getEstoqueById(id).isPresent()) {
             return new ResponseEntity("Registro de estoque não encontrado", HttpStatus.NOT_FOUND);
         }
@@ -64,7 +72,8 @@ public class Produto_LojaController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity excluir(@PathVariable("id") Long id) {
+    @Operation(summary = "Exclui um registro de estoque")
+    public ResponseEntity excluir(@Parameter(description = "ID do registro de estoque (vínculo produto-loja) a ser excluído") @PathVariable("id") Long id) {
         Optional<Produto_Loja> estoque = service.getEstoqueById(id);
         if (!estoque.isPresent()) {
             return new ResponseEntity("Registro de estoque não encontrado", HttpStatus.NOT_FOUND);

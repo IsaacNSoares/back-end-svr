@@ -4,6 +4,9 @@ import br.ufjf.svr.api.dto.CarrinhoDTO;
 import br.ufjf.svr.exception.RegraNegocioException;
 import br.ufjf.svr.model.entity.Carrinho;
 import br.ufjf.svr.service.CarrinhoService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -18,18 +21,21 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/v1/carrinhos")
 @RequiredArgsConstructor
 @CrossOrigin
+@Tag(name = "Carrinhos", description = "Operações relacionadas a carrinhos de compra. Requer autenticação (usuário logado) para todos os endpoints.")
 public class CarrinhoController {
 
     private final CarrinhoService service;
 
     @GetMapping()
+    @Operation(summary = "Lista todos os carrinhos")
     public ResponseEntity get() {
         List<Carrinho> carrinhos = service.getCarrinhos();
         return ResponseEntity.ok(carrinhos.stream().map(CarrinhoDTO::create).collect(Collectors.toList()));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity get(@PathVariable("id") Long id) {
+    @Operation(summary = "Busca um carrinho pelo ID")
+    public ResponseEntity get(@Parameter(description = "ID do carrinho a ser buscado") @PathVariable("id") Long id) {
         Optional<Carrinho> carrinho = service.getCarrinhoById(id);
         if (!carrinho.isPresent()) {
             return new ResponseEntity("Carrinho não encontrado", HttpStatus.NOT_FOUND);
@@ -38,6 +44,7 @@ public class CarrinhoController {
     }
 
     @PostMapping()
+    @Operation(summary = "Cria um novo carrinho")
     public ResponseEntity post(@RequestBody CarrinhoDTO dto) {
         try {
             Carrinho carrinho = converter(dto);
@@ -49,7 +56,8 @@ public class CarrinhoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody CarrinhoDTO dto) {
+    @Operation(summary = "Atualiza um carrinho existente")
+    public ResponseEntity atualizar(@Parameter(description = "ID do carrinho a ser atualizado") @PathVariable("id") Long id, @RequestBody CarrinhoDTO dto) {
         if (!service.getCarrinhoById(id).isPresent()) {
             return new ResponseEntity("Carrinho não encontrado", HttpStatus.NOT_FOUND);
         }
@@ -64,7 +72,8 @@ public class CarrinhoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity excluir(@PathVariable("id") Long id) {
+    @Operation(summary = "Exclui um carrinho")
+    public ResponseEntity excluir(@Parameter(description = "ID do carrinho a ser excluído") @PathVariable("id") Long id) {
         Optional<Carrinho> carrinho = service.getCarrinhoById(id);
         if (!carrinho.isPresent()) {
             return new ResponseEntity("Carrinho não encontrado", HttpStatus.NOT_FOUND);

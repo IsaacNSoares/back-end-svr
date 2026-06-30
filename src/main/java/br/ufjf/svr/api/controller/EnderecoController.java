@@ -4,6 +4,9 @@ import br.ufjf.svr.api.dto.EnderecoDTO;
 import br.ufjf.svr.exception.RegraNegocioException;
 import br.ufjf.svr.model.entity.Endereco;
 import br.ufjf.svr.service.EnderecoService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -18,18 +21,21 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/v1/enderecos")
 @RequiredArgsConstructor
 @CrossOrigin
+@Tag(name = "Endereços", description = "Operações relacionadas a endereços. Requer autenticação (usuário logado) para todos os endpoints.")
 public class EnderecoController {
 
     private final EnderecoService service;
 
     @GetMapping()
+    @Operation(summary = "Lista todos os endereços")
     public ResponseEntity get() {
         List<Endereco> enderecos = service.getEnderecos();
         return ResponseEntity.ok(enderecos.stream().map(EnderecoDTO::create).collect(Collectors.toList()));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity get(@PathVariable("id") Long id) {
+    @Operation(summary = "Busca um endereço pelo ID")
+    public ResponseEntity get(@Parameter(description = "ID do endereço a ser buscado") @PathVariable("id") Long id) {
         Optional<Endereco> endereco = service.getEnderecoById(id);
         if (!endereco.isPresent()) {
             return new ResponseEntity("Endereço não encontrado", HttpStatus.NOT_FOUND);
@@ -38,6 +44,7 @@ public class EnderecoController {
     }
 
     @PostMapping()
+    @Operation(summary = "Cria um novo endereço")
     public ResponseEntity post(@RequestBody EnderecoDTO dto) {
         try {
             Endereco endereco = converter(dto);
@@ -49,7 +56,8 @@ public class EnderecoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody EnderecoDTO dto) {
+    @Operation(summary = "Atualiza um endereço existente")
+    public ResponseEntity atualizar(@Parameter(description = "ID do endereço a ser atualizado") @PathVariable("id") Long id, @RequestBody EnderecoDTO dto) {
         if (!service.getEnderecoById(id).isPresent()) {
             return new ResponseEntity("Endereço não encontrado", HttpStatus.NOT_FOUND);
         }
@@ -64,7 +72,8 @@ public class EnderecoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity excluir(@PathVariable("id") Long id) {
+    @Operation(summary = "Exclui um endereço")
+    public ResponseEntity excluir(@Parameter(description = "ID do endereço a ser excluído") @PathVariable("id") Long id) {
         Optional<Endereco> endereco = service.getEnderecoById(id);
         if (!endereco.isPresent()) {
             return new ResponseEntity("Endereço não encontrado", HttpStatus.NOT_FOUND);
