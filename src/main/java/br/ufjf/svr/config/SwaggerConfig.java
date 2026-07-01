@@ -16,13 +16,13 @@ public class SwaggerConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("SIGLA DA SUA API")
-                        .description("DESCRIÇÃO DA SUA API")
+                        .title("API SVR")
+                        .description("API do SVR (Sistema de Venda de Roupas), desenvolvida para gerenciar as operações de uma loja de roupas com vendas online e presenciais. O sistema permite que colaboradores registrem vendas realizadas na loja física e cadastrem clientes, enquanto administradores têm acesso completo à gestão do sistema. A API cobre funcionalidades como catálogo de produtos, carrinho de compras, pedidos, estoque, fornecedores e métodos de pagamento.")
                         .version("1.0")
                         .contact(new Contact()
-                                .name("SEU NOME")
-                                .url("SUA_URL.COM.BR")
-                                .email("SEU EMAIL.@ESTUDANTE.UFJF.BR")
+                                .name("Diego Pereira Betti e Isaac Nascimento Soares")
+                                .url("https://github.com/IsaacNSoares/back-end-svr")
+                                .email("diego.pereira@estudante.ufjf.br | isaac.nascimento@estudando.ufjf.br")
                         )
                 )
 
